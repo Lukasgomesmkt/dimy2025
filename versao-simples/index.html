@@ -1,0 +1,376 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Barbershop App - Versão Simplificada</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script>
+        tailwind.config = {
+            darkMode: 'class',
+            theme: {
+                extend: {
+                    colors: {
+                        primary: {
+                            DEFAULT: '#FF6B00',
+                            dark: '#E05A00',
+                            light: '#FF8A33',
+                        }
+                    }
+                }
+            }
+        }
+    </script>
+    <style>
+        /* Estilos adicionais além do Tailwind */
+        :root {
+            --primary: #FF6B00;
+            --primary-dark: #E05A00;
+            --primary-light: #FF8A33;
+        }
+
+        /* Transições suaves para o modo escuro */
+        body {
+            transition: background-color 0.3s ease, color 0.3s ease;
+        }
+
+        /* Animação para o botão de login */
+        button[type="submit"] {
+            transition: transform 0.1s ease;
+        }
+
+        button[type="submit"]:active {
+            transform: scale(0.98);
+        }
+    </style>
+</head>
+<body class="bg-gray-50 dark:bg-gray-900 text-gray-900 dark:text-gray-100">
+    <div class="flex h-screen">
+        <!-- Sidebar -->
+        <div class="w-64 bg-white dark:bg-gray-800 border-r border-gray-200 dark:border-gray-700 flex flex-col">
+            <div class="p-4 border-b border-gray-200 dark:border-gray-700">
+                <div class="flex items-center justify-center h-16">
+                    <svg width="180" height="50" viewBox="0 0 180 50" fill="none" xmlns="http://www.w3.org/2000/svg">
+                        <!-- Scissors icon -->
+                        <path d="M25 15C27.7614 15 30 12.7614 30 10C30 7.23858 27.7614 5 25 5C22.2386 5 20 7.23858 20 10C20 12.7614 22.2386 15 25 15Z" fill="#FF6B00" />
+                        <path d="M10 35C12.7614 35 15 32.7614 15 30C15 27.2386 12.7614 25 10 25C7.23858 25 5 27.2386 5 30C5 32.7614 7.23858 35 10 35Z" fill="#FF6B00" />
+                        <path d="M40 35C42.7614 35 45 32.7614 45 30C45 27.2386 42.7614 25 40 25C37.2386 25 35 27.2386 35 30C35 32.7614 37.2386 35 40 35Z" fill="#FF6B00" />
+                        <path d="M25 15L10 30" stroke="#FF6B00" stroke-width="2" />
+                        <path d="M25 15L40 30" stroke="#FF6B00" stroke-width="2" />
+                        
+                        <!-- Text -->
+                        <text x="55" y="30" font-family="Arial" font-size="22" font-weight="bold" fill="#333333">BARBER</text>
+                        <text x="55" y="45" font-family="Arial" font-size="12" fill="#333333">STYLE</text>
+                    </svg>
+                </div>
+            </div>
+
+            <nav class="flex-1 p-4 space-y-2">
+                <a href="#dashboard" class="flex items-center space-x-3 p-3 rounded-lg bg-primary text-white">
+                    <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                        <rect x="3" y="4" width="18" height="18" rx="2" ry="2"></rect>
+                        <line x1="16" y1="2" x2="16" y2="6"></line>
+                        <line x1="8" y1="2" x2="8" y2="6"></line>
+                        <line x1="3" y1="10" x2="21" y2="10"></line>
+                    </svg>
+                    <span>Agendamentos</span>
+                </a>
+                
+                <a href="#orders" class="flex items-center space-x-3 p-3 rounded-lg text-gray-700 dark:text-gray-200 hover:bg-gray-100 dark:hover:bg-gray-700">
+                    <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                        <path d="M21 16V8a2 2 0 0 0-1-1.73l-7-4a2 2 0 0 0-2 0l-7 4A2 2 0 0 0 3 8v8a2 2 0 0 0 1 1.73l7 4a2 2 0 0 0 2 0l7-4A2 2 0 0 0 21 16z"></path>
+                    </svg>
+                    <span>Pedidos</span>
+                </a>
+                
+                <a href="#products" class="flex items-center space-x-3 p-3 rounded-lg text-gray-700 dark:text-gray-200 hover:bg-gray-100 dark:hover:bg-gray-700">
+                    <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                        <path d="M6 2L3 6v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2V6l-3-4z"></path>
+                        <line x1="3" y1="6" x2="21" y2="6"></line>
+                        <path d="M16 10a4 4 0 0 1-8 0"></path>
+                    </svg>
+                    <span>Produtos</span>
+                </a>
+                
+                <a href="#courses" class="flex items-center space-x-3 p-3 rounded-lg text-gray-700 dark:text-gray-200 hover:bg-gray-100 dark:hover:bg-gray-700">
+                    <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                        <polygon points="23 7 16 12 23 17 23 7"></polygon>
+                        <rect x="1" y="5" width="15" height="14" rx="2" ry="2"></rect>
+                    </svg>
+                    <span>Cursos</span>
+                </a>
+            </nav>
+
+            <div class="p-4 border-t border-gray-200 dark:border-gray-700">
+                <button class="flex items-center space-x-3 p-3 w-full rounded-lg text-gray-700 dark:text-gray-200 hover:bg-gray-100 dark:hover:bg-gray-700">
+                    <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                        <path d="M9 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h4"></path>
+                        <polyline points="16 17 21 12 16 7"></polyline>
+                        <line x1="21" y1="12" x2="9" y2="12"></line>
+                    </svg>
+                    <span>Sair</span>
+                </button>
+            </div>
+        </div>
+
+        <!-- Main Content -->
+        <div class="flex-1 flex flex-col overflow-hidden">
+            <!-- Header -->
+            <header class="bg-white dark:bg-gray-800 border-b border-gray-200 dark:border-gray-700 h-16 flex items-center px-4 justify-between">
+                <div class="flex items-center space-x-4">
+                    <button class="p-2 rounded-full hover:bg-gray-100 dark:hover:bg-gray-700 lg:hidden">
+                        <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                            <line x1="3" y1="12" x2="21" y2="12"></line>
+                            <line x1="3" y1="6" x2="21" y2="6"></line>
+                            <line x1="3" y1="18" x2="21" y2="18"></line>
+                        </svg>
+                    </button>
+                    <h1 class="text-xl font-semibold">Dashboard</h1>
+                </div>
+
+                <div class="flex items-center space-x-4">
+                    <div class="relative">
+                        <button class="p-2 rounded-full hover:bg-gray-100 dark:hover:bg-gray-700">
+                            <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                                <path d="M18 8A6 6 0 0 0 6 8c0 7-3 9-3 9h18s-3-2-3-9"></path>
+                                <path d="M13.73 21a2 2 0 0 1-3.46 0"></path>
+                            </svg>
+                            <span class="absolute top-0 right-0 bg-primary text-white text-xs rounded-full h-4 w-4 flex items-center justify-center">
+                                3
+                            </span>
+                        </button>
+                    </div>
+                    <button id="theme-toggle" class="p-2 rounded-full bg-gray-200 dark:bg-gray-700 hover:bg-gray-300 dark:hover:bg-gray-600">
+                        <svg id="sun-icon" class="h-5 w-5 text-yellow-500 hidden" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 3v1m0 16v1m9-9h-1M4 12H3m15.364 6.364l-.707-.707M6.343 6.343l-.707-.707m12.728 0l-.707.707M6.343 17.657l-.707.707M16 12a4 4 0 11-8 0 4 4 0 018 0z" />
+                        </svg>
+                        <svg id="moon-icon" class="h-5 w-5 text-gray-700" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M20.354 15.354A9 9 0 018.646 3.646 9.003 9.003 0 0012 21a9.003 9.003 0 008.354-5.646z" />
+                        </svg>
+                    </button>
+                    <div class="h-8 w-8 rounded-full bg-primary flex items-center justify-center text-white font-semibold">
+                        U
+                    </div>
+                </div>
+            </header>
+
+            <!-- Main Content -->
+            <main class="flex-1 overflow-y-auto p-4 bg-gray-50 dark:bg-gray-900">
+                <div class="space-y-6">
+                    <h1 class="text-2xl font-bold">Bem-vindo ao seu Dashboard</h1>
+                    
+                    <!-- Stats Cards -->
+                    <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4">
+                        <div class="bg-white dark:bg-gray-800 rounded-lg shadow p-4">
+                            <div class="flex justify-between items-start">
+                                <div>
+                                    <p class="text-sm font-medium text-gray-500 dark:text-gray-400">Agendamentos Hoje</p>
+                                    <p class="text-2xl font-semibold mt-1">5</p>
+                                    <p class="text-xs mt-1 text-green-500">+2 desde ontem</p>
+                                </div>
+                                <div class="p-2 rounded-lg bg-gray-100 dark:bg-gray-700">
+                                    <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6 text-blue-500" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                                        <rect x="3" y="4" width="18" height="18" rx="2" ry="2"></rect>
+                                        <line x1="16" y1="2" x2="16" y2="6"></line>
+                                        <line x1="8" y1="2" x2="8" y2="6"></line>
+                                        <line x1="3" y1="10" x2="21" y2="10"></line>
+                                    </svg>
+                                </div>
+                            </div>
+                        </div>
+                        
+                        <div class="bg-white dark:bg-gray-800 rounded-lg shadow p-4">
+                            <div class="flex justify-between items-start">
+                                <div>
+                                    <p class="text-sm font-medium text-gray-500 dark:text-gray-400">Próximo Horário</p>
+                                    <p class="text-2xl font-semibold mt-1">14:00</p>
+                                    <p class="text-xs mt-1 text-gray-500 dark:text-gray-400">João Silva - Corte</p>
+                                </div>
+                                <div class="p-2 rounded-lg bg-gray-100 dark:bg-gray-700">
+                                    <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6 text-green-500" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                                        <circle cx="12" cy="12" r="10"></circle>
+                                        <polyline points="12 6 12 12 16 14"></polyline>
+                                    </svg>
+                                </div>
+                            </div>
+                        </div>
+                        
+                        <div class="bg-white dark:bg-gray-800 rounded-lg shadow p-4">
+                            <div class="flex justify-between items-start">
+                                <div>
+                                    <p class="text-sm font-medium text-gray-500 dark:text-gray-400">Clientes Novos</p>
+                                    <p class="text-2xl font-semibold mt-1">12</p>
+                                    <p class="text-xs mt-1 text-green-500">+3 esta semana</p>
+                                </div>
+                                <div class="p-2 rounded-lg bg-gray-100 dark:bg-gray-700">
+                                    <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6 text-purple-500" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                                        <path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"></path>
+                                        <circle cx="12" cy="7" r="4"></circle>
+                                    </svg>
+                                </div>
+                            </div>
+                        </div>
+                        
+                        <div class="bg-white dark:bg-gray-800 rounded-lg shadow p-4">
+                            <div class="flex justify-between items-start">
+                                <div>
+                                    <p class="text-sm font-medium text-gray-500 dark:text-gray-400">Receita do Dia</p>
+                                    <p class="text-2xl font-semibold mt-1">R$ 450</p>
+                                    <p class="text-xs mt-1 text-green-500">+15% desde ontem</p>
+                                </div>
+                                <div class="p-2 rounded-lg bg-gray-100 dark:bg-gray-700">
+                                    <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6 text-primary" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                                        <line x1="12" y1="1" x2="12" y2="23"></line>
+                                        <path d="M17 5H9.5a3.5 3.5 0 0 0 0 7h5a3.5 3.5 0 0 1 0 7H6"></path>
+                                    </svg>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <!-- Upcoming Appointments -->
+                    <div class="bg-white dark:bg-gray-800 rounded-lg shadow p-4">
+                        <div class="flex justify-between items-center mb-4">
+                            <h2 class="text-lg font-semibold">Próximos Agendamentos</h2>
+                            <button class="text-primary hover:text-primary-dark">Ver todos</button>
+                        </div>
+                        
+                        <div class="overflow-x-auto">
+                            <table class="min-w-full divide-y divide-gray-200 dark:divide-gray-700">
+                                <thead>
+                                    <tr>
+                                        <th class="px-4 py-3 text-left text-xs font-medium text-gray-500 dark:text-gray-400 uppercase tracking-wider">Cliente</th>
+                                        <th class="px-4 py-3 text-left text-xs font-medium text-gray-500 dark:text-gray-400 uppercase tracking-wider">Serviço</th>
+                                        <th class="px-4 py-3 text-left text-xs font-medium text-gray-500 dark:text-gray-400 uppercase tracking-wider">Data</th>
+                                        <th class="px-4 py-3 text-left text-xs font-medium text-gray-500 dark:text-gray-400 uppercase tracking-wider">Horário</th>
+                                        <th class="px-4 py-3 text-right text-xs font-medium text-gray-500 dark:text-gray-400 uppercase tracking-wider">Ações</th>
+                                    </tr>
+                                </thead>
+                                <tbody class="divide-y divide-gray-200 dark:divide-gray-700">
+                                    <tr>
+                                        <td class="px-4 py-3 whitespace-nowrap">João Silva</td>
+                                        <td class="px-4 py-3 whitespace-nowrap">Corte de Cabelo</td>
+                                        <td class="px-4 py-3 whitespace-nowrap">10/04/2025</td>
+                                        <td class="px-4 py-3 whitespace-nowrap">14:00</td>
+                                        <td class="px-4 py-3 whitespace-nowrap text-right">
+                                            <button class="text-blue-500 hover:text-blue-700 mr-2">Editar</button>
+                                            <button class="text-red-500 hover:text-red-700">Cancelar</button>
+                                        </td>
+                                    </tr>
+                                    <tr>
+                                        <td class="px-4 py-3 whitespace-nowrap">Maria Oliveira</td>
+                                        <td class="px-4 py-3 whitespace-nowrap">Barba</td>
+                                        <td class="px-4 py-3 whitespace-nowrap">10/04/2025</td>
+                                        <td class="px-4 py-3 whitespace-nowrap">15:30</td>
+                                        <td class="px-4 py-3 whitespace-nowrap text-right">
+                                            <button class="text-blue-500 hover:text-blue-700 mr-2">Editar</button>
+                                            <button class="text-red-500 hover:text-red-700">Cancelar</button>
+                                        </td>
+                                    </tr>
+                                    <tr>
+                                        <td class="px-4 py-3 whitespace-nowrap">Pedro Santos</td>
+                                        <td class="px-4 py-3 whitespace-nowrap">Corte + Barba</td>
+                                        <td class="px-4 py-3 whitespace-nowrap">11/04/2025</td>
+                                        <td class="px-4 py-3 whitespace-nowrap">10:00</td>
+                                        <td class="px-4 py-3 whitespace-nowrap text-right">
+                                            <button class="text-blue-500 hover:text-blue-700 mr-2">Editar</button>
+                                            <button class="text-red-500 hover:text-red-700">Cancelar</button>
+                                        </td>
+                                    </tr>
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                    
+                    <!-- Quick Actions -->
+                    <div class="grid grid-cols-1 md:grid-cols-3 gap-4">
+                        <div class="bg-white dark:bg-gray-800 rounded-lg shadow p-4">
+                            <div class="flex items-center space-x-3 mb-3">
+                                <div class="p-2 rounded-lg bg-primary/10 text-primary">
+                                    <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                                        <rect x="3" y="4" width="18" height="18" rx="2" ry="2"></rect>
+                                        <line x1="16" y1="2" x2="16" y2="6"></line>
+                                        <line x1="8" y1="2" x2="8" y2="6"></line>
+                                        <line x1="3" y1="10" x2="21" y2="10"></line>
+                                    </svg>
+                                </div>
+                                <h3 class="font-semibold">Novo Agendamento</h3>
+                            </div>
+                            <p class="text-sm text-gray-500 dark:text-gray-400 mb-4">Agende um novo cliente</p>
+                            <button class="w-full bg-primary hover:bg-primary-dark text-white font-medium py-2 px-4 rounded transition-colors">
+                                Agendar
+                            </button>
+                        </div>
+                        
+                        <div class="bg-white dark:bg-gray-800 rounded-lg shadow p-4">
+                            <div class="flex items-center space-x-3 mb-3">
+                                <div class="p-2 rounded-lg bg-primary/10 text-primary">
+                                    <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                                        <line x1="12" y1="1" x2="12" y2="23"></line>
+                                        <path d="M17 5H9.5a3.5 3.5 0 0 0 0 7h5a3.5 3.5 0 0 1 0 7H6"></path>
+                                    </svg>
+                                </div>
+                                <h3 class="font-semibold">Adicionar Produto</h3>
+                            </div>
+                            <p class="text-sm text-gray-500 dark:text-gray-400 mb-4">Cadastre um novo produto</p>
+                            <button class="w-full bg-primary hover:bg-primary-dark text-white font-medium py-2 px-4 rounded transition-colors">
+                                Adicionar
+                            </button>
+                        </div>
+                        
+                        <div class="bg-white dark:bg-gray-800 rounded-lg shadow p-4">
+                            <div class="flex items-center space-x-3 mb-3">
+                                <div class="p-2 rounded-lg bg-primary/10 text-primary">
+                                    <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                                        <path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"></path>
+                                        <circle cx="12" cy="7" r="4"></circle>
+                                    </svg>
+                                </div>
+                                <h3 class="font-semibold">Novo Curso</h3>
+                            </div>
+                            <p class="text-sm text-gray-500 dark:text-gray-400 mb-4">Crie um novo curso ou aula</p>
+                            <button class="w-full bg-primary hover:bg-primary-dark text-white font-medium py-2 px-4 rounded transition-colors">
+                                Criar
+                            </button>
+                        </div>
+                    </div>
+                </div>
+            </main>
+        </div>
+    </div>
+
+    <script>
+        // Gerenciamento de tema (claro/escuro)
+        const themeToggle = document.getElementById('theme-toggle');
+        const sunIcon = document.getElementById('sun-icon');
+        const moonIcon = document.getElementById('moon-icon');
+
+        // Verificar preferência de tema salva
+        if (localStorage.getItem('theme') === 'dark' || 
+            (!localStorage.getItem('theme') && window.matchMedia('(prefers-color-scheme: dark)').matches)) {
+            document.documentElement.classList.add('dark');
+            sunIcon.classList.remove('hidden');
+            moonIcon.classList.add('hidden');
+        } else {
+            document.documentElement.classList.remove('dark');
+            sunIcon.classList.add('hidden');
+            moonIcon.classList.remove('hidden');
+        }
+
+        // Alternar tema
+        themeToggle.addEventListener('click', () => {
+            if (document.documentElement.classList.contains('dark')) {
+                document.documentElement.classList.remove('dark');
+                localStorage.setItem('theme', 'light');
+                sunIcon.classList.add('hidden');
+                moonIcon.classList.remove('hidden');
+            } else {
+                document.documentElement.classList.add('dark');
+                localStorage.setItem('theme', 'dark');
+                sunIcon.classList.remove('hidden');
+                moonIcon.classList.add('hidden');
+            }
+        });
+    </script>
+</body>
+</html>

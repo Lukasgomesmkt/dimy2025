@@ -1,0 +1,20 @@
+/* Estilos adicionais além do Tailwind */
+:root {
+    --primary: #FF6B00;
+    --primary-dark: #E05A00;
+    --primary-light: #FF8A33;
+}
+
+/* Transições suaves para o modo escuro */
+body {
+    transition: background-color 0.3s ease, color 0.3s ease;
+}
+
+/* Animação para o botão de login */
+button[type="submit"] {
+    transition: transform 0.1s ease;
+}
+
+button[type="submit"]:active {
+    transform: scale(0.98);
+}

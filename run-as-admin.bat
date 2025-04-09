@@ -1,0 +1,3 @@
+@echo off
+echo Executando o script PowerShell como administrador...
+powershell -Command "Start-Process powershell -ArgumentList '-ExecutionPolicy Bypass -File "".\setup-and-run.ps1""' -Verb RunAs"
