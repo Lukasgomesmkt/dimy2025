@@ -2,6 +2,8 @@
 
 import { useState } from "react";
 import { FiBarChart2, FiCalendar, FiDollarSign, FiUsers, FiShoppingBag, FiDownload, FiFilter, FiAward } from "react-icons/fi";
+import AgeDistributionChart from "@/components/AgeDistributionChart";
+import SalesStatisticsCard from "@/components/SalesStatisticsCard";
 
 export default function ReportsPage() {
   const [dateRange, setDateRange] = useState<"today" | "week" | "month" | "year" | "custom">("month");
@@ -302,9 +304,14 @@ export default function ReportsPage() {
       case "sales":
         return (
           <div className="space-y-6">
-            <div className="bg-white dark:bg-gray-800 rounded-lg shadow-md p-4">
-              <h3 className="text-lg font-semibold mb-4">Vendas por Dia</h3>
-              {renderBarChart(salesData)}
+            <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+              <div className="bg-white dark:bg-gray-800 rounded-lg shadow-md p-4">
+                <h3 className="text-lg font-semibold mb-4">Vendas por Dia</h3>
+                {renderBarChart(salesData)}
+              </div>
+
+              {/* Gráfico de distribuição de idade dos clientes */}
+              <AgeDistributionChart title="Perfil Etário dos Compradores" />
             </div>
 
             <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
@@ -332,9 +339,14 @@ export default function ReportsPage() {
       case "appointments":
         return (
           <div className="space-y-6">
-            <div className="bg-white dark:bg-gray-800 rounded-lg shadow-md p-4">
-              <h3 className="text-lg font-semibold mb-4">Agendamentos por Dia</h3>
-              {renderBarChart(appointmentsData)}
+            <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+              <div className="bg-white dark:bg-gray-800 rounded-lg shadow-md p-4">
+                <h3 className="text-lg font-semibold mb-4">Agendamentos por Dia</h3>
+                {renderBarChart(appointmentsData)}
+              </div>
+
+              {/* Gráfico de distribuição de idade dos clientes */}
+              <AgeDistributionChart title="Faixa Etária dos Clientes Agendados" />
             </div>
 
             <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
@@ -362,9 +374,14 @@ export default function ReportsPage() {
       case "clients":
         return (
           <div className="space-y-6">
-            <div className="bg-white dark:bg-gray-800 rounded-lg shadow-md p-4">
-              <h3 className="text-lg font-semibold mb-4">Novos Clientes por Dia</h3>
-              {renderBarChart(clientsData)}
+            <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+              <div className="bg-white dark:bg-gray-800 rounded-lg shadow-md p-4">
+                <h3 className="text-lg font-semibold mb-4">Novos Clientes por Dia</h3>
+                {renderBarChart(clientsData)}
+              </div>
+
+              {/* Gráfico de distribuição de idade */}
+              <AgeDistributionChart />
             </div>
 
             <div className="grid grid-cols-1 md:grid-cols-3 gap-4">

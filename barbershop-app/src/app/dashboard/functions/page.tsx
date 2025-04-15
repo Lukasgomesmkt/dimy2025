@@ -97,6 +97,13 @@ export default function FunctionsPage() {
       onClick: openModal
     },
     {
+      name: "Clientes",
+      description: "Gerencie e analise o comportamento dos seus clientes",
+      href: "/dashboard/functions/clients",
+      icon: <FiUsers className="h-6 w-6" />,
+      color: "bg-blue-100 dark:bg-blue-900/30 text-blue-600 dark:text-blue-400"
+    },
+    {
       name: "Adicionar Barbeiro",
       description: "Cadastre um novo profissional na equipe",
       href: "/dashboard/functions/barbers/new",

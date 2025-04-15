@@ -2,8 +2,8 @@
 @tailwind components;
 @tailwind utilities;
 
-/* Importar estilos para esconder a barra de rolagem */
-@import './scrollbar-hide.css';
+/* Não precisamos importar aqui, já importamos no layout.tsx */
+/* @import './scrollbar-hide.css'; */
 
 :root {
   --primary: #FF6B00;

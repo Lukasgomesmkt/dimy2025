@@ -16,7 +16,8 @@ import {
   FiSettings,
   FiSun,
   FiMoon,
-  FiLogOut
+  FiLogOut,
+  FiScissors
 } from "react-icons/fi";
 import { logout } from "@/lib/auth-service";
 import AppointmentModal from "@/components/AppointmentModal";
@@ -98,9 +99,14 @@ export function FunctionsMenu({ onClose, className = "" }: FunctionsMenuProps) {
       onClick: openModal,
     },
     {
+      name: "Clientes",
+      href: "/dashboard/functions/clients",
+      icon: <FiUsers className="h-5 w-5" />,
+    },
+    {
       name: "Adicionar Barbeiro",
       href: "/dashboard/functions/barbers/new",
-      icon: <FiUsers className="h-5 w-5" />,
+      icon: <FiScissors className="h-5 w-5" />,
     },
     {
       name: "Adicionar Produtos",

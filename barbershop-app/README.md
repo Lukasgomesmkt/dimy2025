@@ -1,6 +1,6 @@
 # Barbershop App
 
-Um sistema completo para agendamento de barbearia, marketplace de produtos e cursos online.
+Um sistema completo para gerenciamento de barbearias, incluindo agendamentos, vendas de produtos, cursos e análise de clientes.
 
 ## Funcionalidades
 
@@ -11,6 +11,9 @@ Um sistema completo para agendamento de barbearia, marketplace de produtos e cur
 - Cursos online e vídeo-aulas
 - Rastreamento de pedidos
 - Cálculo automático de frete
+- CRM com análise de comportamento de clientes
+- Segmentação de clientes
+- Relatórios e estatísticas
 
 ## Como Iniciar
 
@@ -49,17 +52,46 @@ Abra [http://localhost:3000](http://localhost:3000) no seu navegador para ver o 
 
 ## Estrutura do Projeto
 
-- `/src/app` - Páginas usando Next.js App Router
-- `/src/components` - Componentes UI reutilizáveis
-- `/src/lib` - Funções utilitárias e bibliotecas
-  - `/src/lib/correios.ts` - Integração com API dos Correios
-  - `/src/lib/products.ts` - Gerenciamento de produtos
-  - `/src/lib/orders.ts` - Sistema de pedidos e rastreamento
-- `/src/styles` - Estilos globais e módulos CSS
+O projeto foi reorganizado para seguir uma arquitetura mais modular e fácil de manter:
+
+```
+barbershop-app/
+├── public/            # Arquivos estáticos
+├── src/
+│   ├── app/           # Rotas e páginas do Next.js
+│   │   ├── api/       # API Routes do Next.js
+│   │   ├── auth/      # Páginas de autenticação
+│   │   └── dashboard/ # Páginas do dashboard
+│   ├── components/    # Componentes React reutilizáveis
+│   ├── hooks/         # Hooks personalizados
+│   ├── lib/           # Lógica de negócios e serviços
+│   │   ├── services/  # Serviços da aplicação
+│   │   └── types/     # Definições de tipos TypeScript
+│   ├── styles/        # Estilos globais
+│   └── utils/         # Funções utilitárias
+```
+
+## Camadas da Aplicação
+
+O projeto segue uma arquitetura em camadas:
+
+1. **Camada de Apresentação**: Componentes React e páginas Next.js
+2. **Camada de API**: Endpoints da API para comunicação cliente-servidor
+3. **Camada de Serviços**: Lógica de negócios e operações
+4. **Camada de Dados**: Acesso e manipulação de dados
+
+## Modo de Armazenamento
+
+O aplicativo suporta dois modos de armazenamento:
+
+1. **localStorage**: Para desenvolvimento e demonstração (padrão)
+2. **Supabase**: Para produção e dados persistentes
+
+Para usar o Supabase, configure as variáveis de ambiente no arquivo `.env.local`.
 
 ## Autenticação
 
-O aplicativo usa Supabase para autenticação. Para configurar o Supabase:
+O aplicativo usa Supabase para autenticação em produção e uma implementação local para desenvolvimento. Para configurar o Supabase:
 
 1. Crie uma conta e projeto no Supabase
 2. Adicione sua URL do Supabase e chave anônima às variáveis de ambiente
@@ -75,48 +107,30 @@ O sistema inclui integração com a API dos Correios para:
 
 Para usar a integração real com os Correios, você precisará substituir as funções simuladas em `src/lib/correios.ts` por chamadas reais à API dos Correios.
 
-## Database Schema (Planned)
+## Estrutura de Dados
 
-- Users
-  - id
-  - email
-  - name
-  - role (customer, barber, admin)
-  - created_at
+O sistema utiliza as seguintes entidades principais:
 
-- Appointments
-  - id
-  - user_id
-  - barber_id
-  - service_id
-  - date
-  - time
-  - status
-  - created_at
+- **User**: Usuários do sistema (clientes e profissionais)
+  - id, name, email, phone, type, birthDate, createdAt, lastLogin, preferences
 
-- Products
-  - id
-  - name
-  - description
-  - price
-  - image_url
-  - stock
-  - created_at
+- **Appointment**: Agendamentos de serviços
+  - id, clientId, barberId, serviceId, date, time, duration, status, price, notes, createdAt, updatedAt
 
-- Courses
-  - id
-  - title
-  - description
-  - price
-  - thumbnail_url
-  - created_at
+- **Service**: Serviços oferecidos pela barbearia
+  - id, name, description, price, duration, category, image, isActive
 
-- Lessons
-  - id
-  - course_id
-  - title
-  - description
-  - video_url
-  - duration
-  - order
-  - created_at
+- **Product**: Produtos disponíveis para venda
+  - id, name, description, price, stock, category, image, isActive, createdAt, updatedAt
+
+- **Order**: Pedidos de produtos
+  - id, clientId, items, total, status, paymentMethod, createdAt, updatedAt
+
+- **ClientInteraction**: Interações com clientes para análise
+  - id, clientId, type, date, value, details, source
+
+- **ClientSegment**: Segmentos de clientes para marketing
+  - id, name, description, criteria, color
+
+- **ClientInsight**: Análises e recomendações para clientes
+  - clientId, visitFrequency, lastVisit, totalSpent, preferredServices, preferredBarbers, purchaseHistory, lifetimeValue, churnRisk, segments, nextVisitPrediction, recommendedServices, recommendedProducts

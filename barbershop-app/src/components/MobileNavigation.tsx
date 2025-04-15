@@ -3,7 +3,7 @@
 import { useState } from "react";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
-import { FiCalendar, FiShoppingBag, FiVideo, FiMenu, FiX, FiHome } from "react-icons/fi";
+import { FiCalendar, FiShoppingBag, FiVideo, FiMenu, FiX, FiHome, FiMessageCircle } from "react-icons/fi";
 import { FunctionsMenu } from "./FunctionsMenu";
 
 export function MobileNavigation() {
@@ -27,6 +27,12 @@ export function MobileNavigation() {
             active={isActive("/dashboard") || pathname === "/dashboard"}
             icon={<FiHome className="h-5 w-5" />}
             label="Home"
+          />
+          <MobileNavLink
+            href="/dashboard/support"
+            active={isActive("/dashboard/support")}
+            icon={<FiMessageCircle className="h-5 w-5" />}
+            label="Atendimento"
           />
           <MobileNavLink
             href="/dashboard/agenda"

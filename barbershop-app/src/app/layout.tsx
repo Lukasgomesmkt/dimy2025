@@ -1,13 +1,18 @@
 import type { Metadata } from "next";
 import { Inter } from "next/font/google";
 import "../styles/globals.css";
+import "../styles/scrollbar-hide.css";
 import { ThemeProvider } from "@/components/ThemeProvider";
 
 const inter = Inter({ subsets: ["latin"] });
 
 export const metadata: Metadata = {
-  title: "Barbershop App",
-  description: "Scheduling system for barbershop with marketplace and courses",
+  title: "DIMY Barber",
+  description: "Sistema de agendamento e gestão para barbearias",
+  icons: {
+    icon: "/images/logo.svg",
+    apple: "/images/logo.svg",
+  }
 };
 
 export default function RootLayout({

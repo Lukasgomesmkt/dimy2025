@@ -1,6 +1,6 @@
 "use client";
 
-import { FiCalendar, FiShoppingBag, FiVideo, FiUsers, FiDollarSign, FiTrendingUp, FiAward } from "react-icons/fi";
+import { FiCalendar, FiShoppingBag, FiVideo, FiUsers, FiDollarSign, FiTrendingUp, FiAward, FiScissors } from "react-icons/fi";
 import Link from "next/link";
 import { useState, useEffect } from "react";
 import AppointmentModal from "@/components/AppointmentModal";
@@ -386,7 +386,7 @@ export default function DashboardPage() {
             href="/dashboard/functions/barbers/new"
             className="flex items-center justify-center bg-blue-400 hover:bg-blue-500 text-white rounded-lg shadow-md p-2 md:p-3 transition-colors"
           >
-            <FiUsers className="h-4 w-4 md:h-5 md:w-5 mr-2" />
+            <FiScissors className="h-4 w-4 md:h-5 md:w-5 mr-2" />
             <span className="font-medium text-sm md:text-base">+ Equipe</span>
           </Link>
         </div>

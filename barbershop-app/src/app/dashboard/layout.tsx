@@ -4,6 +4,7 @@ import { Header } from "@/components/Header";
 import { MainNavigation } from "@/components/MainNavigation";
 import { MobileNavigation } from "@/components/MobileNavigation";
 import { FunctionsMenu } from "@/components/FunctionsMenu";
+import { SplashScreen } from "@/components/SplashScreen";
 
 
 export default function DashboardLayout({

@@ -2,8 +2,10 @@
  * Serviço de armazenamento persistente
  *
  * Este serviço utiliza localStorage para armazenar dados no navegador
- * e também mantém uma cópia em memória para acesso rápido.
+ * e também utiliza o sistema de cache centralizado para acesso rápido.
  */
+
+import { cache, CacheKey, CacheType } from './services/cache.service';
 
 // Tipos de dados
 export interface StoredUser {
@@ -41,7 +43,8 @@ const STORAGE_KEYS = {
   AUTH_TOKEN: "authToken",
 };
 
-// Cache em memória
+// Variáveis locais para compatibilidade com código existente
+// Estas variáveis serão gradualmente substituídas pelo sistema de cache centralizado
 let usersCache: StoredUser[] | null = null;
 let currentUserCache: StoredUser | null = null;
 
@@ -52,39 +55,140 @@ export function initStorage(): void {
   try {
     if (typeof window === "undefined") return;
 
+    // Verificar se os dados já estão no cache centralizado
+    const cachedUsers = cache.get<StoredUser[]>(CacheKey.USERS);
+    if (cachedUsers) {
+      usersCache = cachedUsers;
+      return;
+    }
+
     // Carregar usuários do localStorage
     const storedUsers = localStorage.getItem(STORAGE_KEYS.USERS);
     if (storedUsers) {
       usersCache = JSON.parse(storedUsers);
+      // Armazenar no cache centralizado
+      cache.set(CacheKey.USERS, usersCache, { type: CacheType.MEMORY });
     } else {
       usersCache = [];
-      // Adicionar usuário pré-cadastrado Lucas Gomes
-      const lucasGomes: StoredUser = {
-        id: "user-lucas-gomes",
-        name: "Lucas Gomes",
-        email: "lucas.gomes@example.com",
-        phone: "11999887766",
-        type: "client",
-        birthDate: "1990-01-15",
-        createdAt: new Date().toISOString(),
-        lastLogin: new Date().toISOString(),
-        preferences: {
-          theme: "dark",
-          language: "pt-BR",
-          notifications: true,
-          emailNotifications: true,
+      // Adicionar usuários pré-cadastrados com diferentes idades
+      const sampleUsers: StoredUser[] = [
+        {
+          id: "user-lucas-gomes",
+          name: "Lucas Gomes",
+          email: "lucas.gomes@example.com",
+          phone: "11999887766",
+          type: "client",
+          birthDate: "1990-01-15", // 30-35 anos
+          createdAt: new Date().toISOString(),
+          lastLogin: new Date().toISOString(),
+          preferences: {
+            theme: "dark",
+            language: "pt-BR",
+            notifications: true,
+            emailNotifications: true,
+          },
+          appointments: [
+            {
+              id: "apt-001",
+              date: "2025-04-15T14:00:00Z",
+              service: "Corte de Cabelo",
+              barber: "Carlos Silva",
+              status: "scheduled",
+            }
+          ]
         },
-        appointments: [
-          {
-            id: "apt-001",
-            date: "2025-04-15T14:00:00Z",
-            service: "Corte de Cabelo",
-            barber: "Carlos Silva",
-            status: "scheduled",
+        {
+          id: "user-joao-silva",
+          name: "João Silva",
+          email: "joao.silva@example.com",
+          phone: "11988776655",
+          type: "client",
+          birthDate: "1985-05-20", // 35-40 anos
+          createdAt: new Date().toISOString(),
+          lastLogin: new Date().toISOString(),
+          preferences: {
+            theme: "light",
+            language: "pt-BR",
+            notifications: true,
+            emailNotifications: false,
           }
-        ]
-      };
-      usersCache.push(lucasGomes);
+        },
+        {
+          id: "user-pedro-santos",
+          name: "Pedro Santos",
+          email: "pedro.santos@example.com",
+          phone: "11977665544",
+          type: "client",
+          birthDate: "1978-11-10", // 40-45 anos
+          createdAt: new Date().toISOString()
+        },
+        {
+          id: "user-maria-oliveira",
+          name: "Maria Oliveira",
+          email: "maria.oliveira@example.com",
+          phone: "11966554433",
+          type: "client",
+          birthDate: "1995-03-25", // 25-30 anos
+          createdAt: new Date().toISOString()
+        },
+        {
+          id: "user-ana-costa",
+          name: "Ana Costa",
+          email: "ana.costa@example.com",
+          phone: "11955443322",
+          type: "client",
+          birthDate: "2000-07-12", // 20-25 anos
+          createdAt: new Date().toISOString()
+        },
+        {
+          id: "user-carlos-mendes",
+          name: "Carlos Mendes",
+          email: "carlos.mendes@example.com",
+          phone: "11944332211",
+          type: "client",
+          birthDate: "1970-09-30", // 50-55 anos
+          createdAt: new Date().toISOString()
+        },
+        {
+          id: "user-julia-ferreira",
+          name: "Júlia Ferreira",
+          email: "julia.ferreira@example.com",
+          phone: "11933221100",
+          type: "client",
+          birthDate: "2005-12-05", // 15-20 anos
+          createdAt: new Date().toISOString()
+        },
+        {
+          id: "user-roberto-almeida",
+          name: "Roberto Almeida",
+          email: "roberto.almeida@example.com",
+          phone: "11922110099",
+          type: "client",
+          birthDate: "1965-04-18", // 55-60 anos
+          createdAt: new Date().toISOString()
+        },
+        {
+          id: "user-rafael-barber",
+          name: "Rafael Silva",
+          email: "rafael.silva@example.com",
+          phone: "11911009988",
+          type: "professional",
+          birthDate: "1988-08-22", // Profissional
+          createdAt: new Date().toISOString()
+        },
+        {
+          id: "user-carlos-barber",
+          name: "Carlos Oliveira",
+          email: "carlos.oliveira@example.com",
+          phone: "11900998877",
+          type: "professional",
+          birthDate: "1982-02-14", // Profissional
+          createdAt: new Date().toISOString()
+        }
+      ];
+
+      // Adicionar todos os usuários de exemplo
+      usersCache.push(...sampleUsers);
       saveUsers();
     }
 
@@ -133,12 +237,13 @@ function saveCurrentUser(): void {
     const userJson = JSON.stringify(currentUserCache);
     localStorage.setItem(STORAGE_KEYS.CURRENT_USER, userJson);
 
+    // Atualizar o cache centralizado
+    cache.set(CacheKey.CURRENT_USER, currentUserCache, { type: CacheType.MEMORY });
+
     // Verificar se os dados foram salvos corretamente
     const savedData = localStorage.getItem(STORAGE_KEYS.CURRENT_USER);
     if (!savedData) {
       console.error("Falha ao salvar usuário atual: dados não encontrados após salvar");
-    } else {
-      console.log(`Usuário atual salvo com sucesso: ${currentUserCache.name} (${currentUserCache.email})`);
     }
   } catch (error) {
     console.error("Erro ao salvar usuário atual:", error);
@@ -149,9 +254,22 @@ function saveCurrentUser(): void {
  * Obtém todos os usuários
  */
 export function getAllUsers(): StoredUser[] {
+  // Verificar se os dados estão no cache centralizado
+  const cachedUsers = cache.get<StoredUser[]>(CacheKey.USERS);
+  if (cachedUsers) {
+    return cachedUsers;
+  }
+
+  // Se não estiver no cache, inicializar o armazenamento
   if (!usersCache) {
     initStorage();
   }
+
+  // Armazenar no cache centralizado para futuras consultas
+  if (usersCache) {
+    cache.set(CacheKey.USERS, usersCache, { type: CacheType.MEMORY });
+  }
+
   return usersCache || [];
 }
 
@@ -221,12 +339,22 @@ export function setCurrentUser(user: StoredUser): void {
  * Obtém o usuário atual
  */
 export function getCurrentUser(): StoredUser | null {
+  // Verificar se os dados estão no cache centralizado
+  const cachedUser = cache.get<StoredUser>(CacheKey.CURRENT_USER);
+  if (cachedUser) {
+    currentUserCache = cachedUser;
+    return cachedUser;
+  }
+
+  // Se não estiver no cache, buscar do localStorage
   if (!currentUserCache) {
     try {
       if (typeof window !== "undefined") {
         const storedCurrentUser = localStorage.getItem(STORAGE_KEYS.CURRENT_USER);
         if (storedCurrentUser) {
           currentUserCache = JSON.parse(storedCurrentUser);
+          // Armazenar no cache centralizado
+          cache.set(CacheKey.CURRENT_USER, currentUserCache, { type: CacheType.MEMORY });
         }
       }
     } catch (error) {

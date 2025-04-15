@@ -3,20 +3,22 @@
 import Link from "next/link";
 import { usePathname } from "next/navigation";
 import { FiCalendar, FiShoppingBag, FiVideo, FiMenu, FiHome } from "react-icons/fi";
+import { memo, useCallback } from "react";
 
 interface MainNavigationProps {
   className?: string;
 }
 
-export function MainNavigation({ className = "" }: MainNavigationProps) {
+export const MainNavigation = memo(function MainNavigation({ className = "" }: MainNavigationProps) {
   const pathname = usePathname();
 
-  const isActive = (path: string) => {
+  // Usando useCallback para evitar recriação da função em cada renderização
+  const isActive = useCallback((path: string) => {
     if (path === "/dashboard" && pathname === "/dashboard") {
       return true;
     }
     return pathname.startsWith(path) && path !== "/dashboard";
-  };
+  }, [pathname]);
 
   return (
     <div className="flex flex-col w-full">
@@ -76,7 +78,8 @@ interface NavLinkProps {
   icon: React.ReactNode;
 }
 
-function NavLink({ href, active, children, icon }: NavLinkProps) {
+// Usando memo para evitar re-renderizações desnecessárias
+const NavLink = memo(function NavLink({ href, active, children, icon }: NavLinkProps) {
   return (
     <Link
       href={href}
@@ -85,11 +88,12 @@ function NavLink({ href, active, children, icon }: NavLinkProps) {
           ? "border-primary text-primary"
           : "border-transparent hover:bg-gray-300 dark:hover:bg-gray-700"
       }`}
+      prefetch={false} // Evita pré-carregamento desnecessário
     >
       {icon}
       <span className="font-medium">{children}</span>
     </Link>
   );
-}
+});
 
 // MobileNavLink foi movido para o componente MobileNavigation
